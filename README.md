@@ -71,3 +71,21 @@ Expected response:
 ```json
 {"status":"ok"}
 ```
+
+## Ask endpoint example
+
+After storing embedded chunks and setting `OPENAI_API_KEY`, ask a question through
+the API:
+
+```powershell
+$body = @{
+    question = "What is AWS S3?"
+    top_k = 5
+} | ConvertTo-Json
+
+Invoke-RestMethod `
+    -Uri http://127.0.0.1:8000/ask `
+    -Method Post `
+    -ContentType "application/json" `
+    -Body $body
+```
