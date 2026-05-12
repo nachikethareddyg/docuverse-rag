@@ -58,6 +58,12 @@ $env:OPENAI_API_KEY = "your-api-key"
 python -m docuverse.answer "What is AWS S3?"
 ```
 
+Run the Streamlit UI:
+
+```powershell
+streamlit run src/docuverse/ui.py
+```
+
 ## Health endpoint example
 
 After starting the FastAPI app, check the health endpoint:
