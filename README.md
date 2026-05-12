@@ -64,6 +64,12 @@ Run the Streamlit UI:
 streamlit run src/docuverse/ui.py
 ```
 
+Run the evaluation harness:
+
+```powershell
+python -m docuverse.evaluate eval/gold_set.yaml
+```
+
 ## Health endpoint example
 
 After starting the FastAPI app, check the health endpoint:

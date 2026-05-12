@@ -1,0 +1,86 @@
+- id: s3_object_storage
+  question: What is AWS S3?
+  expected_facts:
+    - object storage service
+    - storing files
+  expected_sources:
+    - s3.md
+
+- id: s3_buckets
+  question: How is data organized in S3?
+  expected_facts:
+    - organized into buckets
+    - object is identified by a key
+  expected_sources:
+    - s3.md
+
+- id: s3_file_types
+  question: What kinds of files can S3 store?
+  expected_facts:
+    - documents
+    - images
+    - backups
+    - application exports
+  expected_sources:
+    - s3.md
+
+- id: s3_capabilities
+  question: What capabilities does S3 support?
+  expected_facts:
+    - durability
+    - versioning
+    - lifecycle policies
+    - access controls
+  expected_sources:
+    - s3.md
+
+- id: s3_document_systems
+  question: How might applications use S3 for document systems?
+  expected_facts:
+    - reliable place to store source documents
+    - before indexing or analysis
+  expected_sources:
+    - s3.md
+
+- id: iam_access_control
+  question: What does AWS IAM help control?
+  expected_facts:
+    - access to AWS resources
+    - who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: iam_components
+  question: What IAM components define access?
+  expected_facts:
+    - users
+    - groups
+    - roles
+    - policies
+  expected_sources:
+    - iam.md
+
+- id: iam_services_resources
+  question: What do IAM policies define actions against?
+  expected_facts:
+    - specific services
+    - resources
+  expected_sources:
+    - iam.md
+
+- id: iam_document_permissions
+  question: How can IAM permissions help document systems?
+  expected_facts:
+    - limit which applications may read objects from S3
+    - write logs
+    - access other AWS services
+  expected_sources:
+    - iam.md
+
+- id: iam_least_privilege
+  question: What is a common design goal when creating IAM policies?
+  expected_facts:
+    - least privilege
+    - creating IAM policies
+  expected_sources:
+    - iam.md
