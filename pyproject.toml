@@ -8,6 +8,8 @@ dependencies = [
     "uvicorn",
     "pytest",
     "httpx",
+    "sentence-transformers",
+    "numpy",
 ]
 
 [build-system]
