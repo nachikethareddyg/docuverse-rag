@@ -51,6 +51,13 @@ Retrieve similar chunks:
 python -m docuverse.retrieve "What is AWS S3?"
 ```
 
+Generate an answer with citations:
+
+```powershell
+$env:OPENAI_API_KEY = "your-api-key"
+python -m docuverse.answer "What is AWS S3?"
+```
+
 ## Health endpoint example
 
 After starting the FastAPI app, check the health endpoint:
