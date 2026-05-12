@@ -7,15 +7,31 @@
 [![pgvector](https://img.shields.io/badge/pgvector-similarity_search-5f43b2)](https://github.com/pgvector/pgvector)
 [![CI](https://img.shields.io/badge/CI-passing-brightgreen)](.github/workflows/ci.yml)
 
-docuverse-rag is a compact, end-to-end RAG system for asking citation-grounded
-questions over local documents. It ingests markdown/text files, chunks them,
-generates local embeddings, stores vectors in PostgreSQL with pgvector, retrieves
-similar chunks, validates citations, serves answers through FastAPI, and includes
-a Streamlit interface plus a small evaluation harness.
+Production-style Retrieval-Augmented Generation (RAG) system with
+citation-grounded answers, vector similarity search, evaluation harness, FastAPI
+APIs, and Streamlit UI.
 
-This repository is intentionally small, but it is built like a real system:
-separate pipeline stages, testable boundaries, deterministic unit tests, and a
-database schema that can support the next layer of product work.
+The project is intentionally compact, but the implementation is structured like
+an engineering system rather than a notebook demo: separate pipeline stages,
+testable boundaries, deterministic unit tests, and a database schema that can
+support the next layer of product work.
+
+## Demo Preview
+
+Screenshots are intended to live under `docs/images/`. The repository includes
+placeholders so the README layout is ready for captured demo assets.
+
+<!-- TODO: Replace with Streamlit UI home screenshot after running `streamlit run src/docuverse/ui.py`. -->
+![Streamlit UI screenshot](docs/images/ui-home.png)
+
+<!-- TODO: Replace with a screenshot showing a question, generated answer, and citations. -->
+![Question and answer screenshot](docs/images/answer-example.png)
+
+<!-- TODO: Replace with a screenshot of the retrieved source chunks expander. -->
+![Retrieved chunks screenshot](docs/images/retrieval-example.png)
+
+<!-- TODO: Replace with a screenshot of the FastAPI /ask response or API client output. -->
+![API example screenshot](docs/images/api-example.png)
 
 ## Problem Statement
 
@@ -108,6 +124,52 @@ models, validation, and easy testability with `TestClient`.
 **Evaluation harness** makes quality visible. The current scorer is deliberately
 simple, but it creates a place to track facts, citations, and regressions as the
 corpus grows.
+
+## Challenges & Tradeoffs
+
+### Why pgvector instead of Pinecone/Weaviate?
+
+pgvector keeps infrastructure simple and colocates vectors with relational
+metadata. For this project, Postgres already stores the chunk text, source file,
+chunk index, and IDs, so keeping embeddings there avoids another service while
+still supporting real vector search.
+
+### Why `BAAI/bge-small-en-v1.5`?
+
+`BAAI/bge-small-en-v1.5` is a practical balance between semantic retrieval
+quality and local development cost. It produces 384-dimensional embeddings, runs
+well enough for a portfolio-scale corpus, and avoids making the project depend
+on a large model just to exercise the retrieval path.
+
+### Why character chunking first?
+
+Character chunking is deterministic, easy to inspect, and straightforward to
+test. It is not the final word on chunking quality, but it is a good first
+implementation because failures are visible and reproducible. A future version
+can move to token-aware chunking once the retrieval baseline is established.
+
+### Why citation validation?
+
+Prompting alone does not guarantee grounded answers. The answer layer validates
+that every cited chunk ID was actually part of the retrieved context, which
+reduces unsupported references and makes citations a runtime contract instead of
+only a formatting request.
+
+### Why an evaluation harness?
+
+Manual QA is useful but inconsistent. The YAML gold set gives the project a
+measurable regression check for expected facts and expected sources, which makes
+retrieval and prompting changes easier to compare over time.
+
+## System Characteristics
+
+- 384-dimensional embeddings from `BAAI/bge-small-en-v1.5`
+- Cosine similarity retrieval through pgvector
+- Deterministic YAML-based evaluation harness
+- pytest coverage for ingestion, embeddings, storage, retrieval, prompting,
+  answer generation, API behavior, UI error handling, and evaluation
+- Local corpus evaluation using the included AWS S3/IAM sample documents
+- Dockerized PostgreSQL 16 with pgvector initialization
 
 ## Evaluation Harness
 
@@ -263,13 +325,18 @@ docuverse-rag/
 
 ## Lessons Learned
 
-RAG quality is mostly a systems problem. The model call is only one part of the
-pipeline; chunking, metadata, retrieval, citation contracts, and evaluation all
-shape whether the final answer is trustworthy.
+RAG quality comes down to the boring-but-important parts of the system. The model
+call matters, but chunk IDs, metadata, retrieval queries, citation checks, and
+evaluation cases are what make the answer path understandable when something
+goes wrong.
 
-The most useful pattern in this project was keeping each stage small and
-testable. Ingestion, embedding, storage, retrieval, prompting, answering, and
-evaluation can all be reasoned about independently, which makes the project easy
-to extend without hiding bugs behind a single end-to-end script.
+The best decision in this project was keeping each stage small enough to test in
+isolation. That made it possible to build the system incrementally without
+needing a live database, a model download, or an OpenAI call for every test run.
+
+It also made the tradeoffs clearer. pgvector was enough for this scope. Character
+chunking was enough to establish the pipeline. The evaluation harness is simple,
+but it creates a concrete place to improve quality rather than guessing from one
+manual answer at a time.
 
 For a more personal write-up, see [docs/LESSONS.md](docs/LESSONS.md).
