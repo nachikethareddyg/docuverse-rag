@@ -10,6 +10,7 @@ dependencies = [
     "httpx",
     "sentence-transformers",
     "numpy",
+    "psycopg[binary]",
 ]
 
 [build-system]

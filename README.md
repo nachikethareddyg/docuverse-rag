@@ -39,6 +39,12 @@ Start Postgres with pgvector:
 docker compose up -d postgres
 ```
 
+Store embedded chunks in Postgres with pgvector:
+
+```powershell
+python -m docuverse.store data/corpus_aws
+```
+
 ## Health endpoint example
 
 After starting the FastAPI app, check the health endpoint:
