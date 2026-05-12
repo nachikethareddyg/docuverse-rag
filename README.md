@@ -45,6 +45,12 @@ Store embedded chunks in Postgres with pgvector:
 python -m docuverse.store data/corpus_aws
 ```
 
+Retrieve similar chunks:
+
+```powershell
+python -m docuverse.retrieve "What is AWS S3?"
+```
+
 ## Health endpoint example
 
 After starting the FastAPI app, check the health endpoint:
