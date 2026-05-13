@@ -1,7 +1,11 @@
 # Demo Screenshot Assets
 
-The main README references four screenshots in this directory. Add these images
-after running the local demo flow in [docs/DEMO_GUIDE.md](../DEMO_GUIDE.md).
+The main README references four screenshots in this directory. The current PNGs
+are static demo assets that accurately represent the Streamlit UI and FastAPI
+response shape without exposing API keys or private desktop details.
+
+When a live demo environment is available, these assets can be replaced with
+fresh captures by following [docs/DEMO_GUIDE.md](../DEMO_GUIDE.md).
 
 ## Required Files
 
