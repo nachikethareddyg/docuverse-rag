@@ -19,18 +19,16 @@ support the next layer of product work.
 ## Demo Preview
 
 Screenshots are intended to live under `docs/images/`. The repository includes
-placeholders so the README layout is ready for captured demo assets.
+placeholders so the README layout is ready for captured demo assets. The final
+screenshots should show the Streamlit UI, a cited answer, retrieved source
+chunks, and an API response.
 
-<!-- TODO: Replace with Streamlit UI home screenshot after running `streamlit run src/docuverse/ui.py`. -->
 ![Streamlit UI screenshot](docs/images/ui-home.png)
 
-<!-- TODO: Replace with a screenshot showing a question, generated answer, and citations. -->
 ![Question and answer screenshot](docs/images/answer-example.png)
 
-<!-- TODO: Replace with a screenshot of the retrieved source chunks expander. -->
 ![Retrieved chunks screenshot](docs/images/retrieval-example.png)
 
-<!-- TODO: Replace with a screenshot of the FastAPI /ask response or API client output. -->
 ![API example screenshot](docs/images/api-example.png)
 
 ## Problem Statement

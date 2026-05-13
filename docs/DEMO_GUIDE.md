@@ -1,7 +1,7 @@
 # Demo Guide
 
-This guide captures the exact path for running docuverse-rag locally and taking
-screenshots for the README demo section.
+This guide captures the exact Windows PowerShell path for running docuverse-rag
+locally and taking screenshots for the README demo section.
 
 ## 1. Prepare The Environment
 
@@ -11,6 +11,12 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e .
+```
+
+Run the test suite before recording screenshots:
+
+```powershell
+python -m pytest
 ```
 
 ## 2. Start Postgres With pgvector
@@ -32,13 +38,15 @@ This command loads the sample AWS markdown files, chunks them, creates
 embeddings, initializes the database schema, clears old rows, and stores the
 current chunk set.
 
-## 4. Ask Questions From The CLI
+## 4. Set OPENAI_API_KEY
 
 Set an OpenAI API key:
 
 ```powershell
 $env:OPENAI_API_KEY = "your-api-key"
 ```
+
+## 5. Ask Questions From The CLI
 
 Generate an answer:
 
@@ -52,7 +60,7 @@ Retrieve chunks directly:
 python -m docuverse.retrieve "What is AWS S3?"
 ```
 
-## 5. Run The FastAPI Service
+## 6. Run The FastAPI Service
 
 ```powershell
 python -m uvicorn docuverse.api:app --reload
@@ -79,7 +87,7 @@ Invoke-RestMethod `
     -Body $body
 ```
 
-## 6. Run The Streamlit UI
+## 7. Run The Streamlit UI
 
 ```powershell
 streamlit run src/docuverse/ui.py
@@ -91,7 +99,7 @@ Use the sample question:
 What is AWS S3?
 ```
 
-## 7. Capture README Screenshots
+## 8. Capture README Screenshots
 
 Save screenshots in `docs/images/` with these filenames:
 
@@ -111,3 +119,19 @@ Suggested captures:
 
 Keep screenshots cropped tightly around the useful UI. Recruiters should be able
 to understand the system at a glance without reading every command.
+
+## Recommended GitHub Topics
+
+Add these topics to the GitHub repository sidebar:
+
+```text
+rag
+fastapi
+streamlit
+postgresql
+pgvector
+vector-search
+llm
+python
+openai
+```
