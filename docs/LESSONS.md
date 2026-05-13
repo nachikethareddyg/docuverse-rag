@@ -1,54 +1,51 @@
 # Lessons Learned
 
-The main lesson from docuverse-rag is that the hard part of RAG is not wiring an
-LLM call. The hard part is making the path to that call understandable: where
-the text came from, how it was chunked, which chunks were retrieved, what the
-prompt contained, and whether the final answer cited real sources.
+The biggest thing I learned is that a RAG project is mostly backend plumbing.
+The LLM call is the visible part, but the quality of the answer depends on the
+steps before it: how documents are chunked, what metadata survives, what gets
+retrieved, and whether the final citations can be checked.
 
-## Grounding Needs A Contract
+## Retrieval Depends On Chunking More Than I Expected
 
-Asking a model to cite sources is easy. Making those citations verifiable is the
-more important engineering step. Carrying stable chunk IDs through ingestion,
-retrieval, prompting, and answer validation gave the project a simple contract:
-if an answer cites `[source: s3.md:0]`, that ID must exist in the retrieved
-context.
+I started with character-based chunking because it is deterministic and easy to
+test. That was the right choice for a first working version, but it also made
+the limitation obvious. Chunk boundaries affect what gets embedded, what gets
+retrieved, and what context the model sees.
 
-The validation is intentionally narrow, but it catches a practical failure mode:
-answers that look sourced while pointing to chunks the system never retrieved.
+The next version should use token-aware chunking and probably preserve more
+document structure.
 
-## Simple First Versions Are Useful
+## Prompting Alone Is Not Enough
 
-The project starts with character-based chunking. Token-aware chunking would be
-more sophisticated, but character chunking made the first retrieval pipeline
-deterministic and easy to test. That was a good tradeoff for the first complete
-version because it made the behavior inspectable.
+It is easy to tell a model to cite sources. That does not mean the citations are
+valid. Adding citation validation made the system feel more real because the
+answer has to cite chunk IDs that were actually retrieved.
 
-The same thinking applies to the evaluation harness. It does not try to judge
-answer quality like a human would. It checks expected facts and expected
-citations, which is enough to create an early regression signal.
+This does not eliminate unsupported answers, but it reduces one concrete failure
+mode: made-up or mismatched source references.
 
-## Infrastructure Should Match The Scope
+## Small Boundaries Made Testing Easier
 
-pgvector was a good fit because it kept text, metadata, and embeddings in
-Postgres. For a small portfolio-scale RAG system, adding a separate vector
-database would have made the project harder to run without proving much more
-about the retrieval design.
+Keeping ingestion, embedding, storage, retrieval, prompting, answering, API, UI,
+and evaluation in separate modules made the project much easier to test. Most
+tests do not need Postgres, a model download, or an OpenAI request.
 
-That does not mean pgvector is always the final answer. It means the storage
-choice should match the current operating constraints.
+Mocking those external systems kept CI reliable and made the unit tests fast.
+That mattered a lot once the project had more than one moving piece.
 
-## Boundaries Made The Project Easier To Build
+## pgvector Was Enough For This Scope
 
-Splitting the code into ingestion, embedding, storage, retrieval, prompting,
-answering, API, UI, and evaluation modules kept each piece small enough to test.
-Most tests do not need a running database, model download, or OpenAI request.
+A separate vector database would have been interesting, but it was not necessary
+for this project. pgvector let me keep vectors, chunk text, source files, and
+metadata in Postgres. For a portfolio-scale system, that was simpler and easier
+to explain.
 
-That made the development loop much faster and kept failures local. When a test
-breaks, it is usually clear which layer changed.
+I would only reach for a separate vector store after the project has enough data
+or operational needs to justify it.
 
 ## What I Would Improve Next
 
-The next improvements would be token-aware chunking, richer document parsing,
-integration tests against a real Postgres service, and evaluation output that can
-be tracked over time. Those changes would build on the current shape rather than
-replace it.
+I would add token-aware chunking, PDF/table extraction, integration tests against
+a real Postgres service, and evaluation output that can be tracked over time.
+The current version is a small but complete baseline, which is exactly what I
+wanted before making the retrieval logic more sophisticated.

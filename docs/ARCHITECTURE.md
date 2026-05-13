@@ -1,9 +1,7 @@
 # Architecture
 
-docuverse-rag is organized as a set of small pipeline stages rather than one
-large application script. Each stage has a narrow responsibility and a test
-surface that avoids real network calls, model downloads, and database access in
-unit tests.
+docuverse-rag is split into small pipeline stages instead of one large script.
+That made the project easier to test and easier to debug while building it.
 
 ## Components
 
@@ -63,9 +61,8 @@ layer then extracts those citations and checks that each cited ID exists in the
 retrieved chunks. If the model cites a chunk that was not retrieved, the answer
 is rejected.
 
-This design does not prove every sentence is grounded, but it prevents a common
-failure mode: citations that look plausible but do not map to the actual context
-used for generation.
+This does not prove every sentence is grounded, but it catches a common failure
+mode: citations that look plausible but do not map to the retrieved context.
 
 ## Testing Strategy
 
@@ -78,7 +75,7 @@ environment-dependent:
 - API tests monkeypatch `generate_answer`.
 - Evaluation tests mock generated answers.
 
-That keeps CI fast while still testing the code paths and contracts that matter.
+That keeps CI fast while still testing the contracts between modules.
 
 Integration tests with a real Postgres service would be a good next step, but
 they should be separate from the default unit test run.

@@ -1,7 +1,7 @@
 # Demo Guide
 
-This guide captures the exact Windows PowerShell path for running docuverse-rag
-locally and taking screenshots for the README demo section.
+This guide captures the Windows PowerShell path I use to run docuverse-rag
+locally and take screenshots for the README demo section.
 
 ## 1. Prepare The Environment
 
@@ -117,8 +117,8 @@ Suggested captures:
 - `retrieval-example.png`: expanded retrieved sources/chunks section
 - `api-example.png`: `/ask` response from PowerShell, browser, or API client
 
-Keep screenshots cropped tightly around the useful UI. Recruiters should be able
-to understand the system at a glance without reading every command.
+Keep screenshots cropped around the useful UI. The goal is to show the flow
+quickly: question, answer, citations, retrieved chunks, and API response.
 
 ## Recommended GitHub Topics
 

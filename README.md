@@ -7,21 +7,21 @@
 [![pgvector](https://img.shields.io/badge/pgvector-similarity_search-5f43b2)](https://github.com/pgvector/pgvector)
 [![CI](https://img.shields.io/badge/CI-passing-brightgreen)](.github/workflows/ci.yml)
 
-Production-style Retrieval-Augmented Generation (RAG) system with
-citation-grounded answers, vector similarity search, evaluation harness, FastAPI
-APIs, and Streamlit UI.
+Production-style Retrieval-Augmented Generation (RAG) system with local
+embeddings, PostgreSQL + pgvector retrieval, citation validation, a FastAPI API,
+a Streamlit UI, and a small evaluation harness.
 
-The project is intentionally compact, but the implementation is structured like
-an engineering system rather than a notebook demo: separate pipeline stages,
-testable boundaries, deterministic unit tests, and a database schema that can
-support the next layer of product work.
+I built this to understand the backend pieces around RAG, not just the final LLM
+call. The project is small, but it covers the full path: load documents, chunk
+them, embed them, store vectors, retrieve context, build a prompt, validate
+citations, expose an API, and run a basic evaluation set.
 
 ## Demo Preview
 
 Screenshots are intended to live under `docs/images/`. The repository includes
-placeholders so the README layout is ready for captured demo assets. The final
-screenshots should show the Streamlit UI, a cited answer, retrieved source
-chunks, and an API response.
+demo screenshots to show the intended flow: Streamlit UI, cited answer,
+retrieved chunks, and API response. Some screenshots may be static demo assets
+when the full live environment is not running.
 
 ![Streamlit UI screenshot](docs/images/ui-home.png)
 
@@ -33,14 +33,20 @@ chunks, and an API response.
 
 ## Problem Statement
 
-Teams often have useful information scattered across internal markdown files,
-runbooks, notes, and cloud documentation. A basic chat interface over those files
-is not enough: answers need to be traceable, retrieval needs to be inspectable,
-and regressions need to be measurable.
+Teams often keep useful knowledge in markdown files, runbooks, notes, and cloud
+docs. A basic chat box over those files is not enough if the answer cannot show
+where it came from or if retrieval changes silently make results worse.
 
-docuverse-rag solves a focused version of that problem. It creates a searchable
-document QA pipeline where every generated answer is expected to cite the chunks
-that support it.
+docuverse-rag handles a focused version of that problem. It creates a searchable
+document QA pipeline where answers are expected to cite the retrieved chunks that
+support them.
+
+## Why This Project Matters
+
+I wanted a project that goes beyond calling an LLM API. The main goal was to
+build the surrounding backend system: document ingestion, embedding, storage,
+retrieval, citation checks, API/UI surfaces, and evaluation. Those pieces are
+where a RAG system usually becomes easier or harder to debug.
 
 ## Key Features
 
@@ -104,40 +110,39 @@ For more detail, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Why These Design Choices?
 
-**pgvector** keeps vector search close to relational metadata. For a small RAG
-system, this avoids introducing a separate vector database before the product
-needs one, while still supporting real cosine-similarity retrieval.
+**pgvector** keeps vector search close to relational metadata. For this scope,
+that was simpler than adding a separate vector database before the project
+needed one.
 
 **`BAAI/bge-small-en-v1.5`** is a practical local embedding model: small enough
-for developer machines, strong enough for semantic search prototypes, and widely
-used enough to be a reasonable default.
+for local development, strong enough for a small semantic retrieval demo, and
+widely used enough to be a reasonable default.
 
 **Citation validation** turns citation format from a prompt suggestion into a
-runtime contract. The answer layer checks that cited chunk IDs were actually
-retrieved, which reduces unsupported source references.
+runtime check. It does not prove every sentence is correct, but it reduces
+unsupported citations by checking that cited chunk IDs were actually retrieved.
 
-**FastAPI** gives the project a clean service boundary, typed request/response
-models, validation, and easy testability with `TestClient`.
+**FastAPI** gives the project a clear service boundary, typed request/response
+models, validation, and straightforward tests with `TestClient`.
 
-**Evaluation harness** makes quality visible. The current scorer is deliberately
-simple, but it creates a place to track facts, citations, and regressions as the
-corpus grows.
+**Evaluation harness** gives the project a small regression check. The current
+scorer is deliberately simple, but it is better than only eyeballing one answer
+at a time.
 
 ## Challenges & Tradeoffs
 
 ### Why pgvector instead of Pinecone/Weaviate?
 
 pgvector keeps infrastructure simple and colocates vectors with relational
-metadata. For this project, Postgres already stores the chunk text, source file,
-chunk index, and IDs, so keeping embeddings there avoids another service while
-still supporting real vector search.
+metadata. Postgres already stores chunk text, source file, chunk index, and IDs,
+so keeping embeddings there avoids another service while still supporting real
+vector search.
 
 ### Why `BAAI/bge-small-en-v1.5`?
 
-`BAAI/bge-small-en-v1.5` is a practical balance between semantic retrieval
-quality and local development cost. It produces 384-dimensional embeddings, runs
-well enough for a portfolio-scale corpus, and avoids making the project depend
-on a large model just to exercise the retrieval path.
+`BAAI/bge-small-en-v1.5` balances semantic retrieval quality with local
+development cost. It produces 384-dimensional embeddings and is small enough to
+use while building the rest of the pipeline.
 
 ### Why character chunking first?
 
@@ -156,8 +161,19 @@ only a formatting request.
 ### Why an evaluation harness?
 
 Manual QA is useful but inconsistent. The YAML gold set gives the project a
-measurable regression check for expected facts and expected sources, which makes
-retrieval and prompting changes easier to compare over time.
+simple regression check for expected facts and expected sources, which makes
+retrieval and prompting changes easier to compare.
+
+## Known Limitations
+
+- The current corpus is small and sample-based.
+- Chunking is character-based, not token-aware.
+- The evaluation harness is lightweight and deterministic.
+- PDF, table, and scanned document extraction are not implemented yet.
+- Answer quality depends heavily on whether retrieval finds the right chunks.
+- `OPENAI_API_KEY` is required for answer generation.
+- Screenshots may be static demo screenshots if the full live environment is not
+  running.
 
 ## System Characteristics
 
@@ -187,8 +203,8 @@ Current scoring is deterministic:
 - `citation_score`: `1` when at least one expected source is cited, otherwise `0`
 - invalid citations fail the item
 
-This is not meant to replace human review. It is a lightweight regression
-signal that can evolve into richer retrieval and answer-quality checks.
+This is not meant to replace human review. It is a first regression signal that
+can evolve into richer retrieval and answer-quality checks.
 
 ## Local Setup
 
@@ -286,8 +302,8 @@ streamlit run src/docuverse/ui.py
 ```
 
 The UI provides a question box, a `top_k` slider, answer display, citations, and
-an expandable source inspection area. It also surfaces common setup errors such
-as a missing `OPENAI_API_KEY`, an unavailable database, or an empty chunk store.
+an expandable source inspection area. It also surfaces common setup errors like
+a missing `OPENAI_API_KEY`, unavailable database, or empty chunk store.
 
 ## Project Structure
 
@@ -323,18 +339,16 @@ docuverse-rag/
 
 ## Lessons Learned
 
-RAG quality comes down to the boring-but-important parts of the system. The model
-call matters, but chunk IDs, metadata, retrieval queries, citation checks, and
-evaluation cases are what make the answer path understandable when something
-goes wrong.
+RAG quality came down to more than I expected. The model call matters, but chunk
+IDs, metadata, retrieval queries, citation checks, and evaluation cases are what
+make the answer path understandable when something goes wrong.
 
-The best decision in this project was keeping each stage small enough to test in
-isolation. That made it possible to build the system incrementally without
-needing a live database, a model download, or an OpenAI call for every test run.
+I underestimated how much retrieval quality depends on chunking. Keeping the
+first chunker simple made the project easier to test, but it also made the next
+improvement obvious: token-aware chunking would be worth adding.
 
-It also made the tradeoffs clearer. pgvector was enough for this scope. Character
-chunking was enough to establish the pipeline. The evaluation harness is simple,
-but it creates a concrete place to improve quality rather than guessing from one
-manual answer at a time.
+The best decision was keeping each pipeline stage small. Mocking the model,
+database, and OpenAI calls kept CI reliable, and pgvector was enough for this
+scope without adding a separate vector DB.
 
 For a more personal write-up, see [docs/LESSONS.md](docs/LESSONS.md).
