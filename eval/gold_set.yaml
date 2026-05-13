@@ -22,40 +22,6 @@
   expected_sources:
     - s3.md
 
-- id: def_s3_004
-  question: What is S3 versioning?
-  expected_facts:
-    - versioning
-    - S3 supports
-  expected_sources:
-    - s3.md
-
-- id: def_s3_005
-  question: What are S3 lifecycle policies?
-  expected_facts:
-    - lifecycle policies
-    - S3 supports
-  expected_sources:
-    - s3.md
-
-- id: def_s3_006
-  question: What are S3 access controls?
-  expected_facts:
-    - access controls
-    - S3 supports
-  expected_sources:
-    - s3.md
-
-- id: def_s3_007
-  question: What kinds of files can S3 store?
-  expected_facts:
-    - documents
-    - images
-    - backups
-    - application exports
-  expected_sources:
-    - s3.md
-
 - id: def_iam_001
   question: What is AWS IAM?
   expected_facts:
@@ -65,38 +31,6 @@
     - iam.md
 
 - id: def_iam_002
-  question: What is an IAM user?
-  expected_facts:
-    - IAM users
-    - define who can perform actions
-  expected_sources:
-    - iam.md
-
-- id: def_iam_003
-  question: What is an IAM group?
-  expected_facts:
-    - groups
-    - define who can perform actions
-  expected_sources:
-    - iam.md
-
-- id: def_iam_004
-  question: What is an IAM role?
-  expected_facts:
-    - roles
-    - define who can perform actions
-  expected_sources:
-    - iam.md
-
-- id: def_iam_005
-  question: What is an IAM policy?
-  expected_facts:
-    - policies
-    - define who can perform actions
-  expected_sources:
-    - iam.md
-
-- id: def_iam_006
   question: What is least privilege in IAM?
   expected_facts:
     - least privilege
@@ -104,21 +38,85 @@
   expected_sources:
     - iam.md
 
-- id: def_iam_007
-  question: What are AWS resources in the context of IAM?
+- id: def_lambda_001
+  question: What is AWS Lambda?
   expected_facts:
-    - AWS resources
-    - access to AWS resources
+    - compute service
+    - runs code without the need to manage servers
   expected_sources:
-    - iam.md
+    - lambda-what-is.md
 
-- id: def_iam_008
-  question: What are IAM permissions?
+- id: def_lambda_002
+  question: What is a Lambda function?
   expected_facts:
-    - permissions
-    - limit which applications may read objects from S3
+    - configure the core capabilities and options
+    - Lambda function using the Lambda API or console
   expected_sources:
-    - iam.md
+    - lambda-functions.md
+
+- id: def_lambda_003
+  question: What is a Lambda runtime?
+  expected_facts:
+    - language-specific environment
+    - relays invocation events
+  expected_sources:
+    - lambda-runtimes.md
+
+- id: def_lambda_004
+  question: What are Lambda environment variables?
+  expected_facts:
+    - adjust your function's behavior without updating code
+    - pair of strings
+  expected_sources:
+    - lambda-env-vars.md
+
+- id: def_lambda_005
+  question: What are Lambda permissions used for?
+  expected_facts:
+    - control security and access
+    - execution roles
+  expected_sources:
+    - lambda-what-is.md
+
+- id: def_ec2_001
+  question: What is Amazon EC2?
+  expected_facts:
+    - on-demand, scalable computing capacity
+    - AWS Cloud
+  expected_sources:
+    - ec2-what-is.md
+
+- id: def_ec2_002
+  question: What is an EC2 instance?
+  expected_facts:
+    - virtual server
+    - AWS Cloud
+  expected_sources:
+    - ec2-what-is.md
+
+- id: def_ec2_003
+  question: What is an Amazon Machine Image?
+  expected_facts:
+    - provides the software
+    - boot an Amazon EC2 instance
+  expected_sources:
+    - ec2-amis.md
+
+- id: def_ec2_004
+  question: What is an Amazon EBS volume?
+  expected_facts:
+    - durable, block-level storage device
+    - After you attach a volume to an instance
+  expected_sources:
+    - ec2-ebs-volumes.md
+
+- id: def_ec2_005
+  question: What is an EC2 security group?
+  expected_facts:
+    - virtual firewall
+    - outbound traffic
+  expected_sources:
+    - ec2-getting-started.md
 
 - id: how_s3_001
   question: How does S3 organize stored data?
@@ -145,22 +143,6 @@
     - s3.md
 
 - id: how_s3_004
-  question: How can S3 help with backup files?
-  expected_facts:
-    - backups
-    - object storage service
-  expected_sources:
-    - s3.md
-
-- id: how_s3_005
-  question: How does S3 support long-term file management?
-  expected_facts:
-    - lifecycle policies
-    - durability
-  expected_sources:
-    - s3.md
-
-- id: how_s3_006
   question: How does S3 support access management?
   expected_facts:
     - access controls
@@ -168,19 +150,11 @@
   expected_sources:
     - s3.md
 
-- id: how_s3_007
+- id: how_s3_005
   question: How does S3 help applications store exports?
   expected_facts:
     - application exports
     - storing files
-  expected_sources:
-    - s3.md
-
-- id: how_s3_008
-  question: How does S3 support durability for stored files?
-  expected_facts:
-    - durability
-    - object storage service
   expected_sources:
     - s3.md
 
@@ -209,14 +183,6 @@
     - iam.md
 
 - id: how_iam_004
-  question: How can IAM permissions help with writing logs?
-  expected_facts:
-    - write logs
-    - permissions can limit
-  expected_sources:
-    - iam.md
-
-- id: how_iam_005
   question: How does least privilege guide IAM policy design?
   expected_facts:
     - least privilege
@@ -224,21 +190,54 @@
   expected_sources:
     - iam.md
 
-- id: how_iam_006
-  question: How do IAM roles fit into access management?
+- id: how_lambda_001
+  question: How does Lambda run code without server management?
   expected_facts:
-    - roles
-    - define who can perform actions
+    - runs your code on a high-availability compute infrastructure
+    - manages all the computing resources
   expected_sources:
-    - iam.md
+    - lambda-what-is.md
 
-- id: how_iam_007
-  question: How does IAM help applications access other AWS services?
+- id: how_lambda_002
+  question: How do event sources trigger Lambda functions?
   expected_facts:
-    - access other AWS services
-    - permissions can limit
+    - Event sources and AWS services
+    - passing event data in JSON format
   expected_sources:
-    - iam.md
+    - lambda-what-is.md
+
+- id: how_lambda_003
+  question: How can you configure Lambda environment variables?
+  expected_facts:
+    - Lambda console
+    - AWS Command Line Interface
+    - AWS Serverless Application Model
+  expected_sources:
+    - lambda-env-vars.md
+
+- id: how_ec2_001
+  question: How do you get started with an EC2 instance?
+  expected_facts:
+    - launch an EC2 instance
+    - connect to an EC2 instance
+  expected_sources:
+    - ec2-getting-started.md
+
+- id: how_ec2_002
+  question: How does an AMI help launch EC2 instances?
+  expected_facts:
+    - provides the software
+    - You must specify an AMI
+  expected_sources:
+    - ec2-amis.md
+
+- id: how_ec2_003
+  question: How do EBS volumes work with EC2 instances?
+  expected_facts:
+    - After you attach a volume to an instance
+    - EBS volumes are flexible
+  expected_sources:
+    - ec2-ebs-volumes.md
 
 - id: cmp_s3_iam_001
   question: What is the difference between S3 and IAM?
@@ -331,31 +330,31 @@
     - iam.md
 
 - id: neg_001
-  question: What is the pricing for S3 Glacier Deep Archive?
+  question: What is the pricing for Amazon Redshift RA3 nodes?
   expected_facts:
     - no answer found
   expected_sources: []
 
 - id: neg_002
-  question: How do Lambda cold starts work?
+  question: How do DynamoDB global secondary indexes choose partition keys?
   expected_facts:
     - no answer found
   expected_sources: []
 
 - id: neg_003
-  question: What EC2 instance type should I choose for GPU training?
+  question: What Route 53 routing policy should I use for latency-based routing?
   expected_facts:
     - no answer found
   expected_sources: []
 
 - id: neg_004
-  question: How do VPC route tables work?
+  question: How do EKS managed node group upgrades work?
   expected_facts:
     - no answer found
   expected_sources: []
 
 - id: neg_005
-  question: What is the difference between DynamoDB partitions and indexes?
+  question: What is the crawler classifier order in AWS Glue?
   expected_facts:
     - no answer found
   expected_sources: []
@@ -370,22 +369,26 @@
     - iam.md
 
 - id: multi_002
-  question: How would you store documents and control access to them with AWS services?
+  question: How would S3, IAM, and Lambda work together for file processing?
   expected_facts:
-    - S3 is a reliable place to store source documents
-    - IAM controls access to AWS resources
+    - storing
+    - control access to AWS resources
+    - Process files automatically when uploaded to Amazon Simple Storage Service
   expected_sources:
     - s3.md
     - iam.md
+    - lambda-what-is.md
 
 - id: multi_003
-  question: Which AWS services in the corpus are involved in storing files and limiting access?
+  question: Which services in the corpus help store objects, control access, and run compute?
   expected_facts:
-    - S3 stores files
-    - IAM permissions can limit access
+    - object storage service
+    - control access to AWS resources
+    - on-demand, scalable computing capacity
   expected_sources:
     - s3.md
     - iam.md
+    - ec2-what-is.md
 
 - id: multi_004
   question: How can an application store exports and restrict who can read them?
@@ -397,10 +400,12 @@
     - iam.md
 
 - id: multi_005
-  question: How do S3 object keys and IAM policies support document access?
+  question: How do S3 object keys, Lambda functions, and EC2 instances differ?
   expected_facts:
     - each object is identified by a key
-    - IAM policies define who can perform actions
+    - configure the core capabilities and options
+    - EC2 instance is a virtual server
   expected_sources:
     - s3.md
-    - iam.md
+    - lambda-functions.md
+    - ec2-what-is.md
