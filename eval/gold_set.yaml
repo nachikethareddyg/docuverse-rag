@@ -1,4 +1,4 @@
-- id: s3_object_storage
+- id: def_s3_001
   question: What is AWS S3?
   expected_facts:
     - object storage service
@@ -6,15 +6,47 @@
   expected_sources:
     - s3.md
 
-- id: s3_buckets
-  question: How is data organized in S3?
+- id: def_s3_002
+  question: What is an S3 bucket?
   expected_facts:
-    - organized into buckets
-    - object is identified by a key
+    - data is organized into buckets
+    - storing files
   expected_sources:
     - s3.md
 
-- id: s3_file_types
+- id: def_s3_003
+  question: What is an S3 object key?
+  expected_facts:
+    - each object is identified by a key
+    - object storage
+  expected_sources:
+    - s3.md
+
+- id: def_s3_004
+  question: What is S3 versioning?
+  expected_facts:
+    - versioning
+    - S3 supports
+  expected_sources:
+    - s3.md
+
+- id: def_s3_005
+  question: What are S3 lifecycle policies?
+  expected_facts:
+    - lifecycle policies
+    - S3 supports
+  expected_sources:
+    - s3.md
+
+- id: def_s3_006
+  question: What are S3 access controls?
+  expected_facts:
+    - access controls
+    - S3 supports
+  expected_sources:
+    - s3.md
+
+- id: def_s3_007
   question: What kinds of files can S3 store?
   expected_facts:
     - documents
@@ -24,63 +56,351 @@
   expected_sources:
     - s3.md
 
-- id: s3_capabilities
-  question: What capabilities does S3 support?
+- id: def_iam_001
+  question: What is AWS IAM?
   expected_facts:
-    - durability
-    - versioning
-    - lifecycle policies
-    - access controls
+    - Identity and Access Management
+    - control access to AWS resources
+  expected_sources:
+    - iam.md
+
+- id: def_iam_002
+  question: What is an IAM user?
+  expected_facts:
+    - IAM users
+    - define who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: def_iam_003
+  question: What is an IAM group?
+  expected_facts:
+    - groups
+    - define who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: def_iam_004
+  question: What is an IAM role?
+  expected_facts:
+    - roles
+    - define who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: def_iam_005
+  question: What is an IAM policy?
+  expected_facts:
+    - policies
+    - define who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: def_iam_006
+  question: What is least privilege in IAM?
+  expected_facts:
+    - least privilege
+    - common design goal
+  expected_sources:
+    - iam.md
+
+- id: def_iam_007
+  question: What are AWS resources in the context of IAM?
+  expected_facts:
+    - AWS resources
+    - access to AWS resources
+  expected_sources:
+    - iam.md
+
+- id: def_iam_008
+  question: What are IAM permissions?
+  expected_facts:
+    - permissions
+    - limit which applications may read objects from S3
+  expected_sources:
+    - iam.md
+
+- id: how_s3_001
+  question: How does S3 organize stored data?
+  expected_facts:
+    - organized into buckets
+    - object is identified by a key
   expected_sources:
     - s3.md
 
-- id: s3_document_systems
-  question: How might applications use S3 for document systems?
+- id: how_s3_002
+  question: How does S3 support document storage before indexing?
   expected_facts:
     - reliable place to store source documents
     - before indexing or analysis
   expected_sources:
     - s3.md
 
-- id: iam_access_control
-  question: What does AWS IAM help control?
+- id: how_s3_003
+  question: How does an application identify an object in S3?
   expected_facts:
-    - access to AWS resources
-    - who can perform actions
+    - object is identified by a key
+    - buckets
+  expected_sources:
+    - s3.md
+
+- id: how_s3_004
+  question: How can S3 help with backup files?
+  expected_facts:
+    - backups
+    - object storage service
+  expected_sources:
+    - s3.md
+
+- id: how_s3_005
+  question: How does S3 support long-term file management?
+  expected_facts:
+    - lifecycle policies
+    - durability
+  expected_sources:
+    - s3.md
+
+- id: how_s3_006
+  question: How does S3 support access management?
+  expected_facts:
+    - access controls
+    - S3 supports
+  expected_sources:
+    - s3.md
+
+- id: how_s3_007
+  question: How does S3 help applications store exports?
+  expected_facts:
+    - application exports
+    - storing files
+  expected_sources:
+    - s3.md
+
+- id: how_s3_008
+  question: How does S3 support durability for stored files?
+  expected_facts:
+    - durability
+    - object storage service
+  expected_sources:
+    - s3.md
+
+- id: how_iam_001
+  question: How does IAM control access to AWS resources?
+  expected_facts:
+    - users, groups, roles, and policies
+    - define who can perform actions
   expected_sources:
     - iam.md
 
-- id: iam_components
-  question: What IAM components define access?
+- id: how_iam_002
+  question: How do IAM policies affect specific services and resources?
   expected_facts:
-    - users
-    - groups
-    - roles
-    - policies
+    - perform actions
+    - specific services and resources
   expected_sources:
     - iam.md
 
-- id: iam_services_resources
-  question: What do IAM policies define actions against?
-  expected_facts:
-    - specific services
-    - resources
-  expected_sources:
-    - iam.md
-
-- id: iam_document_permissions
-  question: How can IAM permissions help document systems?
+- id: how_iam_003
+  question: How can IAM limit access to S3 objects?
   expected_facts:
     - limit which applications may read objects from S3
-    - write logs
-    - access other AWS services
+    - IAM permissions
   expected_sources:
     - iam.md
 
-- id: iam_least_privilege
-  question: What is a common design goal when creating IAM policies?
+- id: how_iam_004
+  question: How can IAM permissions help with writing logs?
+  expected_facts:
+    - write logs
+    - permissions can limit
+  expected_sources:
+    - iam.md
+
+- id: how_iam_005
+  question: How does least privilege guide IAM policy design?
   expected_facts:
     - least privilege
-    - creating IAM policies
+    - design goal
   expected_sources:
+    - iam.md
+
+- id: how_iam_006
+  question: How do IAM roles fit into access management?
+  expected_facts:
+    - roles
+    - define who can perform actions
+  expected_sources:
+    - iam.md
+
+- id: how_iam_007
+  question: How does IAM help applications access other AWS services?
+  expected_facts:
+    - access other AWS services
+    - permissions can limit
+  expected_sources:
+    - iam.md
+
+- id: cmp_s3_iam_001
+  question: What is the difference between S3 and IAM?
+  expected_facts:
+    - S3 is an object storage service
+    - IAM controls access to AWS resources
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_002
+  question: How are S3 buckets different from IAM policies?
+  expected_facts:
+    - S3 data is organized into buckets
+    - IAM policies define who can perform actions
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_003
+  question: What is the difference between S3 object keys and IAM roles?
+  expected_facts:
+    - object is identified by a key
+    - roles define who can perform actions
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_004
+  question: How is S3 access control different from IAM least privilege?
+  expected_facts:
+    - S3 supports access controls
+    - least privilege is a design goal
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_005
+  question: How are S3 lifecycle policies different from IAM permissions?
+  expected_facts:
+    - S3 supports lifecycle policies
+    - IAM permissions can limit actions
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_006
+  question: What is the difference between storing documents in S3 and granting access with IAM?
+  expected_facts:
+    - S3 stores source documents
+    - IAM controls access
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_007
+  question: How do S3 backups differ from IAM logs access?
+  expected_facts:
+    - S3 stores backups
+    - IAM permissions can limit writing logs
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_008
+  question: How are S3 application exports different from IAM service permissions?
+  expected_facts:
+    - S3 stores application exports
+    - IAM can limit access to AWS services
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_009
+  question: What is the difference between S3 durability and IAM access control?
+  expected_facts:
+    - S3 supports durability
+    - IAM controls access to AWS resources
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: cmp_s3_iam_010
+  question: How are S3 documents different from IAM users?
+  expected_facts:
+    - S3 stores documents
+    - IAM users define who can perform actions
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: neg_001
+  question: What is the pricing for S3 Glacier Deep Archive?
+  expected_facts:
+    - no answer found
+  expected_sources: []
+
+- id: neg_002
+  question: How do Lambda cold starts work?
+  expected_facts:
+    - no answer found
+  expected_sources: []
+
+- id: neg_003
+  question: What EC2 instance type should I choose for GPU training?
+  expected_facts:
+    - no answer found
+  expected_sources: []
+
+- id: neg_004
+  question: How do VPC route tables work?
+  expected_facts:
+    - no answer found
+  expected_sources: []
+
+- id: neg_005
+  question: What is the difference between DynamoDB partitions and indexes?
+  expected_facts:
+    - no answer found
+  expected_sources: []
+
+- id: multi_001
+  question: How can S3 and IAM work together in a document system?
+  expected_facts:
+    - S3 stores source documents
+    - IAM permissions can limit which applications may read objects from S3
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: multi_002
+  question: How would you store documents and control access to them with AWS services?
+  expected_facts:
+    - S3 is a reliable place to store source documents
+    - IAM controls access to AWS resources
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: multi_003
+  question: Which AWS services in the corpus are involved in storing files and limiting access?
+  expected_facts:
+    - S3 stores files
+    - IAM permissions can limit access
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: multi_004
+  question: How can an application store exports and restrict who can read them?
+  expected_facts:
+    - S3 stores application exports
+    - IAM permissions can limit which applications may read objects from S3
+  expected_sources:
+    - s3.md
+    - iam.md
+
+- id: multi_005
+  question: How do S3 object keys and IAM policies support document access?
+  expected_facts:
+    - each object is identified by a key
+    - IAM policies define who can perform actions
+  expected_sources:
+    - s3.md
     - iam.md
