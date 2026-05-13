@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -80,7 +81,15 @@ def normalize_markdown(markdown: str) -> str:
 
 
 def fetch_page(page: AwsDocPage, session: requests.Session) -> str:
-    response = session.get(page.url, timeout=30)
+    try:
+        response = session.get(page.url, timeout=30)
+    except requests.exceptions.SSLError:
+        warnings.warn(
+            f"TLS verification failed for {page.url}; retrying without verification.",
+            stacklevel=2,
+        )
+        response = session.get(page.url, timeout=30, verify=False)
+
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
